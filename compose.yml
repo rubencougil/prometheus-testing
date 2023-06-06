@@ -1,4 +1,5 @@
 services:
+
   prometheus:
     image: prom/prometheus:v2.44.0
     container_name: prometheus
@@ -12,9 +13,7 @@ services:
 
   app:
     build: ./app
-    container_name: app
-    ports:
-      - 2223:2223
+    scale: 3
 
 volumes:
   prom_data:
