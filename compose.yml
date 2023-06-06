@@ -10,5 +10,11 @@ services:
       - ./etc/prometheus/:/etc/prometheus/
       - prom_data:/prometheus
 
+  app:
+    build: ./app
+    container_name: app
+    ports:
+      - 2223:2223
+
 volumes:
   prom_data:

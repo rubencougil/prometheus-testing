@@ -4,14 +4,13 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
   workflow_dispatch:
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
@@ -20,9 +19,9 @@ jobs:
 
       - name: Run Prometheus
         run: docker compose up -d prometheus
-          
-      - name: Wait
-        run: sleep 30
-          
+
+      - name: Run Prometheus
+        run: docker compose up -d app
+
       - name: Run Test for Rules
         run: docker compose exec prometheus promtool test rules /etc/prometheus/rules/test.yml
