@@ -4,10 +4,10 @@ groups:
   - name: example
     rules:
       - alert: InstancesDown
-        expr: sum(up{job="app"}) == 0
-        for: 5m
+        expr: sum(up{job="app"} OR on() vector(0)) == 0
+        for: 1m
         labels:
           severity: page
         annotations:
-          summary: "Instances of {{ $labels.job }} are down"
-          description: "Instances of job {{ $labels.job }} has been down for more than 5 minutes."
+          summary: "All instances of the App are down"
+          description: "All instances of the App have been down for more than 5 minutes."

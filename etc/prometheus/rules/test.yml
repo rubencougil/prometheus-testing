@@ -11,22 +11,25 @@ tests:
   - interval: 1m
     # Series data.
     input_series:
-      - series: 'up{job="prometheus", instance="localhost:9090"}'
+      - series: 'up{job="app", instance="app-1:2223"}'
+        # 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
         values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-      - series: 'up{job="node_exporter", instance="localhost:9100"}'
-        values: "1+0x6 0 0 0 0 0 0 0 0" # 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0
+      - series: 'up{job="app", instance="app-2:2223"}'
+        # 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 1 1 1
+        values: "1+0x6 0 0 0 0 0 0 0 0 1+0x5"
 
     # Unit test for alerting rules.
     alert_rule_test:
       # Unit test 1.
       - eval_time: 10m
-        alertname: InstanceDown
+        alertname: InstancesDown
         exp_alerts:
           # Alert 1.
           - exp_labels:
               severity: page
-              instance: localhost:9090
-              job: prometheus
             exp_annotations:
-              summary: "Instance localhost:9090 down"
-              description: "localhost:9090 of job prometheus has been down for more than 5 minutes."
+              summary: "All instances of the App are down"
+              description: "All instances of the App have been down for more than 5 minutes."
+      - eval_time: 15m
+        alertname: InstancesDown
+        exp_alerts:

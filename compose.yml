@@ -13,7 +13,8 @@ services:
 
   app:
     build: ./app
-    scale: 3
+    deploy: 
+      replicas: 3
 
 volumes:
   prom_data:
