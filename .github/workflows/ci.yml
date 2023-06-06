@@ -20,6 +20,11 @@ jobs:
       - name: Run Prometheus
         run: docker compose up -d prometheus
 
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3.5.0
+        with:
+          working-directory: ./app
+
       - name: Run Sample App
         run: docker compose up -d app
 
