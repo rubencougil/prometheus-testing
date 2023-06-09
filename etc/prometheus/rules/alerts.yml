@@ -10,4 +10,4 @@ groups:
           severity: page
         annotations:
           summary: "All instances of the App are down"
-          description: "All instances of the App have been down for more than 5 minutes."
+          description: "All instances of the App have been down for more than 1 minute(s)."

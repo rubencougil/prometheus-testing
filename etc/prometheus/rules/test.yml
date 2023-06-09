@@ -7,7 +7,7 @@ rule_files:
 evaluation_interval: 1m
 
 tests:
-  # Test 1.
+
   - interval: 1m
     # Series data.
     input_series:
@@ -20,16 +20,23 @@ tests:
 
     # Unit test for alerting rules.
     alert_rule_test:
-      # Unit test 1.
+
+      # What should happen after 5m
+      - eval_time: 5m
+        alertname: InstancesDown
+        exp_alerts:
+
+      # What should happen after 10m
       - eval_time: 10m
         alertname: InstancesDown
         exp_alerts:
-          # Alert 1.
           - exp_labels:
               severity: page
             exp_annotations:
               summary: "All instances of the App are down"
-              description: "All instances of the App have been down for more than 5 minutes."
+              description: "All instances of the App have been down for more than 1 minute(s)."
+
+      # What should happen after 15m
       - eval_time: 15m
         alertname: InstancesDown
         exp_alerts:
