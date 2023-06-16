@@ -1,10 +1,14 @@
 # This is the rules file.
 
+# In "instances_down_v1.yml" we used the expression "sum(up{job="app"}) == 0" to check if all instances of the App are down.
+# But if a instance is down, it will stop reporting metrics to Prometheus.
+
 groups:
-  - name: example
+  - name: InstancesDownV2
     rules:
-      - alert: InstancesDown
+      - alert: InstancesDownV2
         expr: sum(up{job="app"} OR on() vector(0)) == 0
+        #expr: sum(up{job="app"}) == 0
         for: 1m
         labels:
           severity: page

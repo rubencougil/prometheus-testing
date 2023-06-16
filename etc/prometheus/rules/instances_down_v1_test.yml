@@ -1,0 +1,42 @@
+# This is the main input for unit testing.
+# Only this file is passed as command line argument.
+
+rule_files:
+  - instances_down_v1.yml
+
+evaluation_interval: 1m
+
+tests:
+
+  - interval: 1m
+    # Series data.
+    input_series:
+      - series: 'up{job="app", instance="app-1:2223"}'
+        # 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        values: "0x14"
+      - series: 'up{job="app", instance="app-2:2223"}'
+        # 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1
+        values: "1+0x4 0x9 1+0x4"
+
+    # Unit test for alerting rules.
+    alert_rule_test:
+
+      # What should happen after 5m
+      - eval_time: 5m
+        alertname: InstancesDownV1
+        exp_alerts:
+
+      # What should happen after 10m
+      - eval_time: 10m
+        alertname: InstancesDownV1
+        exp_alerts:
+          - exp_labels:
+              severity: page
+            exp_annotations:
+              summary: "All instances of the App are down"
+              description: "All instances of the App have been down for more than 1 minute(s)."
+
+      # What should happen after 15m
+      - eval_time: 15m
+        alertname: InstancesDownV1
+        exp_alerts:

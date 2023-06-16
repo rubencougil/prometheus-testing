@@ -4,7 +4,8 @@ global:
   evaluation_interval: 15s
 
 rule_files:
-  - "rules/alerts.yml"
+  - "rules/instances_down_v1.yml"
+  - "rules/instances_down_v2.yml"
 
 alerting:
   alertmanagers:

@@ -2,7 +2,7 @@
 # Only this file is passed as command line argument.
 
 rule_files:
-  - alerts.yml
+  - instances_down_v2.yml
 
 evaluation_interval: 1m
 
@@ -12,23 +12,24 @@ tests:
     # Series data.
     input_series:
       - series: 'up{job="app", instance="app-1:2223"}'
-        # 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-        values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+        # _ _ _ _ _ _ _ _ _ _ _ _ _ _
+        values: "_x14"
       - series: 'up{job="app", instance="app-2:2223"}'
-        # 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 1 1 1
-        values: "1+0x6 0 0 0 0 0 0 0 0 1+0x5"
+        # 1 1 1 1 1 >(1)_< _ _ _ _ _ _ _ _ _ 1 1 1 1 1
+        values: "1+0x4 _x9 1+0x4"
 
     # Unit test for alerting rules.
     alert_rule_test:
 
       # What should happen after 5m
       - eval_time: 5m
-        alertname: InstancesDown
+        alertname: InstancesDownV2
         exp_alerts:
 
-      # What should happen after 10m
-      - eval_time: 10m
-        alertname: InstancesDown
+      # What should happen after 11m
+      # NOTE: If the sample is missing, Prometheus will use last gathered value for the next "evaluation_interval" window.
+      - eval_time: 11m
+        alertname: InstancesDownV2
         exp_alerts:
           - exp_labels:
               severity: page
@@ -38,5 +39,5 @@ tests:
 
       # What should happen after 15m
       - eval_time: 15m
-        alertname: InstancesDown
+        alertname: InstancesDownV2
         exp_alerts:

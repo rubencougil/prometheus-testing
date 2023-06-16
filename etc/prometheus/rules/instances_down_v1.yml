@@ -1,0 +1,13 @@
+# This is the rules file.
+
+groups:
+  - name: InstancesDownV1
+    rules:
+      - alert: InstancesDownV1
+        expr: sum(up{job="app"}) == 0
+        for: 1m
+        labels:
+          severity: page
+        annotations:
+          summary: "All instances of the App are down"
+          description: "All instances of the App have been down for more than 1 minute(s)."
