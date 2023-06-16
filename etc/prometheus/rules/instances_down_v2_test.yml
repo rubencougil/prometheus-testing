@@ -34,7 +34,7 @@ tests:
               severity: page
             exp_annotations:
               summary: "All instances of the App are down"
-              description: "All instances of the App have been down for more than 1 minute(s). aaa"
+              description: "All instances of the App have been down for more than 1 minute(s)."
 
       # What should happen after 15m
       - eval_time: 15m
