@@ -15,19 +15,15 @@ tests:
         # _ _ _ _ _ _ _ _ _ _ _ _ _ _
         values: "_x14"
       - series: 'up{job="app", instance="app-2:2223"}'
-        # 1 1 1 1 1 >(1)_< _ _ _ _ _ _ _ _ _ 1 1 1 1 1
+        # 1 1 1 1 1 _ _ _ _ _ _ _ _ _ _ 1 1 1 1 1
         values: "1+0x4 _x9 1+0x4"
 
-    # Unit test for alerting rules.
     alert_rule_test:
 
-      # What should happen after 5m
-      - eval_time: 5m
+      - eval_time: 4m
         alertname: InstancesDownV2
 
-      # What should happen after 11m
-      # NOTE: If the sample is missing, Prometheus will use last gathered value for the next "evaluation_interval" window.
-      - eval_time: 11m
+      - eval_time: 10m
         alertname: InstancesDownV2
         exp_alerts:
           - exp_labels:
@@ -36,6 +32,5 @@ tests:
               summary: "All instances of the App are down"
               description: "All instances of the App have been down for more than 1 minute(s)."
 
-      # What should happen after 15m
       - eval_time: 15m
         alertname: InstancesDownV2

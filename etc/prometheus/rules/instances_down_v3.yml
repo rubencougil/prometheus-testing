@@ -4,10 +4,11 @@
 # But if a instance is down, it will stop reporting metrics to Prometheus.
 
 groups:
-  - name: InstancesDownV2
+  - name: InstancesDownV3
     rules:
-      - alert: InstancesDownV2
+      - alert: InstancesDownV3
         expr: sum(up{job="app"} OR on() vector(0)) == 0
+        for: 1m
         labels:
           severity: page
         annotations:

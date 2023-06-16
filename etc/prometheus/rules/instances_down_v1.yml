@@ -5,7 +5,6 @@ groups:
     rules:
       - alert: InstancesDownV1
         expr: sum(up{job="app"}) == 0
-        for: 1m
         labels:
           severity: page
         annotations:

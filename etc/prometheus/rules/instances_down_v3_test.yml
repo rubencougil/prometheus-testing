@@ -2,7 +2,7 @@
 # Only this file is passed as command line argument.
 
 rule_files:
-  - instances_down_v1.yml
+  - instances_down_v3.yml
 
 evaluation_interval: 1m
 
@@ -12,19 +12,19 @@ tests:
     # Series data.
     input_series:
       - series: 'up{job="app", instance="app-1:2223"}'
-        # 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-        values: "0x14"
+        # _ _ _ _ _ _ _ _ _ _ _ _ _ _
+        values: "_x14"
       - series: 'up{job="app", instance="app-2:2223"}'
-        # 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1
-        values: "1+0x4 0x9 1+0x4"
+        # 1 1 1 1 1 _ _ _ _ _ _ _ _ _ _ 1 1 1 1 1
+        values: "1+0x4 _x9 1+0x4"
 
     alert_rule_test:
 
       - eval_time: 4m
-        alertname: InstancesDownV1
+        alertname: InstancesDownV3
 
-      - eval_time: 5m
-        alertname: InstancesDownV1
+      - eval_time: 11m
+        alertname: InstancesDownV3
         exp_alerts:
           - exp_labels:
               severity: page
@@ -33,4 +33,4 @@ tests:
               description: "All instances of the App have been down for more than 1 minute(s)."
 
       - eval_time: 15m
-        alertname: InstancesDownV1
+        alertname: InstancesDownV3
