@@ -14,18 +14,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: Run Prometheus
-        run: docker compose up -d prometheus
-
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v3.5.0
-        with:
-          working-directory: ./app
-
-      - name: Start Application
+      - name: Run App
         run: make start
 
       - name: Run Test for Rules

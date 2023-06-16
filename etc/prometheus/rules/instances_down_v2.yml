@@ -7,8 +7,8 @@ groups:
   - name: InstancesDownV2
     rules:
       - alert: InstancesDownV2
-        expr: sum(up{job="app"} OR on() vector(0)) == 0
         #expr: sum(up{job="app"}) == 0
+        expr: sum(up{job="app"} OR on() vector(0)) == 0
         for: 1m
         labels:
           severity: page
