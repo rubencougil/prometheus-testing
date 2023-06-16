@@ -16,5 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run Test for Rules
+      - name: Run Application
+        run: make start
+
+      - name: Run Tests
         run: make test
