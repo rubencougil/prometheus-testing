@@ -24,7 +24,6 @@ tests:
       # What should happen after 5m
       - eval_time: 5m
         alertname: InstancesDownV1
-        exp_alerts:
 
       # What should happen after 10m
       - eval_time: 10m
@@ -39,4 +38,3 @@ tests:
       # What should happen after 15m
       - eval_time: 15m
         alertname: InstancesDownV1
-        exp_alerts:

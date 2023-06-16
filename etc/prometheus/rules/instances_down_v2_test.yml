@@ -24,7 +24,6 @@ tests:
       # What should happen after 5m
       - eval_time: 5m
         alertname: InstancesDownV2
-        exp_alerts:
 
       # What should happen after 11m
       # NOTE: If the sample is missing, Prometheus will use last gathered value for the next "evaluation_interval" window.
@@ -35,9 +34,8 @@ tests:
               severity: page
             exp_annotations:
               summary: "All instances of the App are down"
-              description: "All instances of the App have been down for more than 1 minute(s)."
+              description: "All instances of the App have been down for more than 1 minute(s). aaa"
 
       # What should happen after 15m
       - eval_time: 15m
         alertname: InstancesDownV2
-        exp_alerts:
