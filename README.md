@@ -1,4 +1,4 @@
-# 💤 Sleep Soundly: Realiable Alerting with Unit Testing in Prometheus
+# 😴 Sleep Soundly: Realiable Alerting with Unit Testing in Prometheus
 
 [![CI](https://github.com/rubencougil/prometheus-testing/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rubencougil/prometheus-testing/actions/workflows/ci.yml)
 
