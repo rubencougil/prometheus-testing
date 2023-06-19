@@ -9,11 +9,13 @@ evaluation_interval: 1m
 tests:
 
   - interval: 1m
-    # Series data.
+
     input_series:
+
       - series: 'up{job="app", instance="app-1:2223"}'
         # _ _ _ _ _ _ _ _ _ _ _ _ _ _
         values: "_x14"
+
       - series: 'up{job="app", instance="app-2:2223"}'
         # 1 1 1 1 1 _ _ _ _ _ _ _ _ _ _ 1 1 1 1 1
         values: "1+0x4 _x9 1+0x4"

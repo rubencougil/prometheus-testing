@@ -1,11 +1,12 @@
 global:
-  scrape_interval: 15s
-  scrape_timeout: 10s
-  evaluation_interval: 15s
+  scrape_interval: 5s # default 1m
+  scrape_timeout: 5s # default 10s
+  evaluation_interval: 5s # default 1m
 
 rule_files:
   - "rules/instances_down_v1.yml"
   - "rules/instances_down_v2.yml"
+  - "rules/instances_down_v3.yml"
 
 alerting:
   alertmanagers:
