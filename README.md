@@ -1,8 +1,6 @@
-# 🤖 Prometheus Rules Testing
+# 😴 Sleep Soundly: Realiable Alerting with Unit Testing in Prometheus
 
 [![CI](https://github.com/rubencougil/prometheus-testing/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rubencougil/prometheus-testing/actions/workflows/ci.yml)
-
-# Prometheus Unit Testing
 
 ## 1. Introduction
 
@@ -86,7 +84,7 @@ The PromQL expression `sum(up{job="app"}) == 0` implies that the rule evaluation
 It is crucial to ensure that the expression accurately represents the intended meaning in plain words. While this example may seem relatively straightforward, it's important to consider more complex PromQL queries like the following:
 
 ```yaml
-sum by(namespace, application) (increase(http_server_requests_seconds_count{namespace="live", application="backend", status=~"500|503"}[%(time)s]))/
+sum by(namespace, application) (increase(http_server_requests_seconds_count{namespace="live", application="backend", status=~"500|503"}[10m]))/
 sum by(namespace, application) (increase(http_server_requests_seconds_count{namespace="live", application="backend"}[10m])) * 100 > 10
 and ON() sum by(namespace, application) (increase(http_server_requests_seconds_count{namespace="live", application="backend"}[10m])) > 100
 ```
