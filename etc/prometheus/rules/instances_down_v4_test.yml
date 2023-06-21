@@ -1,0 +1,41 @@
+# This is the main input for unit testing.
+# Only this file is passed as command line argument.
+
+rule_files:
+  - instances_down_v4.yml
+
+evaluation_interval: 1m
+
+tests:
+
+  - interval: 1m
+
+    input_series:
+
+      - series: 'up{job="app", instance="app-1:2223"}'
+        # _ _ _ _ _ _ _ _ _ _ _ _ _ _
+        values: "_x14"
+
+      - series: 'up{job="app", instance="app-2:2223"}'
+        # 1 1 1 1 1 _ _ _ _ _ _ _ _ _ _ 1 1 1 1 1
+        values: "1x4 _x9 1x4"
+
+    alert_rule_test:
+
+      - eval_time: 4m
+        alertname: InstancesDownV4
+
+      # This is 10 minutes and not 6 because of staleness handling.
+      # See https://prometheus.io/docs/prometheus/latest/querying/basics/#staleness
+      - eval_time: 10m
+        alertname: InstancesDownV4
+        exp_alerts:
+          - exp_labels:
+              severity: page
+              job: "app"
+            exp_annotations:
+              summary: "All instances of the App are down"
+              description: "All instances of the App are down"
+
+      - eval_time: 15m
+        alertname: InstancesDownV4

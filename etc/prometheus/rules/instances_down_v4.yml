@@ -1,0 +1,10 @@
+groups:
+  - name: InstancesDownV4
+    rules:
+      - alert: InstancesDownV4
+        expr: absent(up{job="app"})
+        labels:
+          severity: page
+        annotations:
+          summary: "All instances of the App are down"
+          description: "All instances of the App are down"

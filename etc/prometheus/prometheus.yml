@@ -7,6 +7,7 @@ rule_files:
   - "rules/instances_down_v1.yml"
   - "rules/instances_down_v2.yml"
   - "rules/instances_down_v3.yml"
+  - "rules/instances_down_v4.yml"
 
 alerting:
   alertmanagers:
