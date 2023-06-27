@@ -48,7 +48,7 @@ Similar to rules, the file containing the tests is specified in YAML format.
 
 ```yaml
 rule_files:
-	  - alerts.yml 
+	- alerts.yml 
 
 evaluation_interval: 1m #1m is the default
 
@@ -88,7 +88,7 @@ The complexity of the query increases the chances of errors, making it crucial t
 Returning to the previous simple expression, `sum(up{job="app"}) == 0`, let's examine the various components involved in a test before coding it:
 
 ```yaml
-		interval: 1m
+interval: 1m
 
     input_series:
       - series: 'up{job="app", instance="app-1:2223"}'
@@ -171,7 +171,7 @@ There’s another thing to be aware of, and is the “staleness” handling of P
 Then, taking into account those 5 minutes, the tests should looks like this:
 
 ```yaml
-		interval: 1m
+interval: 1m
 
     input_series:
 
@@ -230,7 +230,7 @@ This single change can cause our unit test to fail, which is a common occurrence
 To address this issue, we need to modify our test by waiting for the alert to fire after an additional minute. The updated test code would look like this:
 
 ```yaml
-			- eval_time: 4m
+- eval_time: 4m
         alertname: InstancesDownV3
  
       - eval_time: 11m # <-- Changed because of the "for" clause
