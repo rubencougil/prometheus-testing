@@ -2,6 +2,9 @@
 
 [![CI](https://github.com/rubencougil/prometheus-testing/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rubencougil/prometheus-testing/actions/workflows/ci.yml)
 
+- 👉 [Slides here [PDF]](docs/slides.pdf)
+- 👉 [Talk here [PDF]](docs/talk.pdf)
+
 ## 1. Introduction
 
 In this session, we will discuss one of the unique features of Prometheus: the ability to programmatically test alerting rules.
