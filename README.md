@@ -51,7 +51,7 @@ Similar to rules, the file containing the tests is specified in YAML format.
 
 ```yaml
 rule_files:
-	- alerts.yml 
+    - alerts.yml 
 
 evaluation_interval: 1m #1m is the default
 
