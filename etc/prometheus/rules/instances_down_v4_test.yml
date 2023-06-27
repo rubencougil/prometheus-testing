@@ -1,6 +1,3 @@
-# This is the main input for unit testing.
-# Only this file is passed as command line argument.
-
 rule_files:
   - instances_down_v4.yml
 

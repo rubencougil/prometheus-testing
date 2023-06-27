@@ -1,4 +1,4 @@
-# 😴 Sleep Soundly: Realiable Alerting with Unit Testing in Prometheus
+# 😴 Sleep Soundly: Reliable Alerting with Unit Testing in Prometheus
 
 [![CI](https://github.com/rubencougil/prometheus-testing/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rubencougil/prometheus-testing/actions/workflows/ci.yml)
 
@@ -12,29 +12,21 @@ Unfortunately, sometimes an issue arises, disrupting the system's normal functio
 
 However, there are also instances of "false positives." The on-call person receives a notification, rushes to their laptop, investigates the issue, only to discover that there was no real problem. Nada. Sometimes, the alert itself is flawed. Since humans write alert rules, they are prone to human errors, and a mistake in the expression can lead to such situations. Unfortunately, in many monitoring tools, there is no way to identify these issues in advance. This is because these expressions require real data for evaluation, usually obtained from live environments.
 
-Prometheus addresses this problem with a built-in mechanism. It provides a tool called "prom-tool," which allows people to test alert rules before deployment. This ensures that what the developer has in mind when writing the rule aligns with its actual behavior. The "prom-tool" offers this testing capability among other features.
+Prometheus addresses this problem with a built-in mechanism. It provides a tool called `promtool` , which allows people to test alert rules before deployment. This ensures that what the developer has in mind when writing the rule aligns with its actual behavior. The `promtool` offers this testing capability among other features.
 
 These tests follow a specific syntax but are similar in essence to unit tests in any programming language. They assert that the code performs as intended.
 
 Moreover, you can integrate these tests into a continuous integration (CI) pipeline, so they run whenever someone attempts to modify or create a rule. If there is a change in the expression that affects how the rule is evaluated, the test will fail, providing prompt feedback to the developer regarding the impact of the change.
 
-Implementing this feature will undoubtedly improve your sleep quality. Here, we often use the phrase "sleep like a baby" to signify sound sleep. However, in my opinion, it's one of the biggest lies in human history. Trust me, I recently became a father, and "sleeping like a baby" actually means waking up every 45 minutes, crying loudly due to various unidentified and inexpressible reasons. I believe the second biggest lie in history is the remaining minute displayed on washing machine timers.
+Implementing this feature will undoubtedly improve your sleep quality. Here, we often use the phrase "sleep like a baby" to signify sound sleep. However, in my opinion, it's one of the biggest lies in human history. Trust me, I recently became a father, and "sleeping like a baby" actually means waking up every 45 minutes, crying loudly due to various unidentified and inexpressible reasons.
 
-We will delve into these details shortly. However, before that, let's provide a brief explanation of how Prometheus works and why it is crucial to understand how alerting rules are evaluated.
+We will dive into these details shortly. However, before that, let's provide a brief explanation of how Prometheus works and why it is crucial to understand how alerting rules are evaluated.
 
 ## 2. Bit of context about Prometheus
 
-As you may already know, Prometheus has skyrocketed in popularity as a monitoring platform. It joined the Cloud Native Computing Foundation (CNCF) back in 2016, proudly claiming the second spot after Kubernetes. The moment SoundCloud unleashed its code, the adoption was massive, with everyone embracing Prometheus with open arms. And guess what? Its effectiveness had already been proven because Prometheus follows in the footsteps of Google's in-house platform, Borgmon. They share a multitude of similarities: the pull-based metric gathering mechanism, the nearly identical query language (DSL), and the dedicated Time Series Database (TSDB) for data storage.
+As you may already know, Prometheus has skyrocketed in popularity as a monitoring platform. It joined the Cloud Native Computing Foundation (CNCF) back in 2016, proudly claiming the second spot after Kubernetes. The moment SoundCloud unleashed its code, the adoption was massive, with everyone embracing Prometheus with open arms. Its effectiveness had already been proven because Prometheus follows in the footsteps of Google's in-house platform, Borgmon. They share a multitude of similarities: the pull-based metric gathering mechanism, the nearly identical query language (DSL), and the dedicated Time Series Database (TSDB) for data storage.
 
-I would say more: Prometheus is now the de-facto standard for monitoring in Kubernetes environments. It has very powerful service discovery implementations that allow developers to easily configure it for scalable deployments. Also, it has lots of "exporters" for well-known technologies, providing the ability to export the metrics in the appropriate Prometheus format.
-
-Prometheus is meant to be easy to install and easy to use. Unlike other software platforms that make scalability a convoluted mess of clustering and sharding mechanisms, the Prometheus creators deliberately opted for a different path—it doesn't scale horizontally.
-
-That means that you can have multiple Prometheus instances but they do not talk to each other. They can scrape the same targets and store the metrics in their internal TSDB. If you have a Grafana instance to visualize the metrics, you'd have to configure multiple Data Sources that point to each different Prometheus instance (because, hey, there's no such thing as a magical "connect to the cluster" like you might find in RDS or Elasticsearch).
-
-The way of solving this problem is just to forward the metrics to an external storage platform that will allow horizontal scaling (like Cortex or Thanos). Therefore, all the Prometheus instances will send metrics to a centralized place that can be attached as a unique Data Source for Grafana.
-
-One important thing to take into account is that even if you enable such a mechanism to forward metrics to an external storage, Prometheus will still store the metrics in its internal TSDB (with a retention policy of 15 days or by surpassing a certain size on disk). And this is significant because the alerting rules configured in Prometheus rely on data from its internal TSDB. That's precisely why alerting rules are crafted with short time windows like 5 minutes, 1 hour, or maybe 24 hours, but rarely beyond that.
+Prometheus is now the de-facto standard for monitoring in Kubernetes environments. It has very powerful service discovery implementations that allow developers to easily configure it for scalable deployments. Also, it has lots of "exporters" for well-known technologies, providing the ability to export the metrics in the appropriate format.
 
 ## 3. How Alerting Rules work
 
@@ -42,7 +34,7 @@ An alerting rule is simply an expression written in PromQL language that undergo
 
 When an alerting rule is "firing," it sends a notification to an external component called Alert Manager, which is part of the Prometheus Stack. The Alert Manager usually knows what to do: send an email, a message to a Slack Channel, or even ping PagerDuty, which potentially could wake you up in the middle of the night.
 
-All of this depends on custom labels, such as "severity," which are added to the existing set of labels for the rule. These labels help group related alerts together. Additionally, annotations come into play. Annotations are extra parameters added to the rule, like a "summary," "description," or perhaps a link to a helpful "runbook." They are incredibly valuable when someone receives an alert notification and needs to swiftly understand what went wrong and how to fix it.
+All of this depends on custom labels, such as "severity," which are added to the existing set of labels for the rule. These labels help group related alerts together. Additionally, annotations come into play. Annotations are extra parameters added to the rule, like a "summary," "description", or perhaps a link to a helpful "Runbook." They are incredibly valuable when someone receives an alert notification and needs to swiftly understand what went wrong and how to fix it.
 
 PromQL is an incredibly powerful DSL language, but it can be challenging to master. That's why thorough testing of rules is crucial. In complex queries, the rule's outcome may not align with your expectations. Therefore, by testing the rules, you can promptly identify and address such issues.
 
@@ -56,7 +48,7 @@ Similar to rules, the file containing the tests is specified in YAML format.
 
 ```yaml
 rule_files:
-    - alerts.yml 
+	  - alerts.yml 
 
 evaluation_interval: 1m #1m is the default
 
@@ -70,13 +62,13 @@ tests:
 groups:
   - name: example
     rules:
-      - alert: InstancesDown
+      - alert: InstancesDownV1
         expr: sum(up{job="app"}) == 0
         labels:
           severity: sev1 
         annotations:
           summary: "All instances of App are down"
-            description: "All instances of App down for more than 1 minute."
+            description: "All instances of App are down"
 ```
 
 The PromQL expression `sum(up{job="app"}) == 0` implies that the rule evaluation will yield a `true` value if the *sum* of the uptime of all scraped targets with the name "app" equals zero.
@@ -96,7 +88,7 @@ The complexity of the query increases the chances of errors, making it crucial t
 Returning to the previous simple expression, `sum(up{job="app"}) == 0`, let's examine the various components involved in a test before coding it:
 
 ```yaml
-    interval: 1m
+		interval: 1m
 
     input_series:
       - series: 'up{job="app", instance="app-1:2223"}'
@@ -126,19 +118,18 @@ Returning to the previous simple expression, `sum(up{job="app"}) == 0`, let's ex
 ```
 
 - **Interval**: The interval represents the time window within which a metric reports a single value. In this example, the metric `up` will report either `0` ****or `1` every minute.
-
-  Some explanation about the notation here:
-
-    - `a+bxc` becomes `a a+b a+(2*b) a+(3*b) … a+(c*b)`
-    - `a-bxc` becomes `a a-b a-(2*b) a-(3*b) … a-(c*b)`
-    - `_` represents a missing sample from scrape
-    - `stale` represents a missing sample from scrape. A time series goes "stale" when it has no samples in the last 5 minutes.
 - **Input series**: The input series corresponds to the "Arrange" stage in the Unit Test framework. It involves specifying the values reported by one or more series belonging to the same metric (dimensions). In the provided example, two different series belong to the metric `up` with different instances:
-    - `up{job="app", instance="app-1:2223"}`
-    - `up{job="app", instance="app-2:2223"}`
+  - `up{job="app", instance="app-1:2223"}`
+  - `up{job="app", instance="app-2:2223"}`
 
   Prometheus will report values for each series independently.
 
+  Some explanation about the notation here:
+
+  - `a+bxc` becomes `a a+b a+(2*b) a+(3*b) … a+(c*b)`
+  - `a-bxc` becomes `a a-b a-(2*b) a-(3*b) … a-(c*b)`
+  - `_` represents a missing sample from scrape
+  - `stale` represents a missing sample from scrape. A time series goes "stale" when it has no samples in the last 5 minutes.
 - **Alert rule test**: The alert rule test corresponds to the "Assert" stage (the preceding "Act" stage is implicit and executed automatically by `promtool`). Here, we define the expected behavior over time. In the example, after 5 minutes, the `exp_alerts` should contain no content, indicating that the alert is "inactive." However, after 15 minutes, the alert should be "firing," and we can assert the content of labels and annotations provided by the rule. It's important to note that labels and annotations may have dynamic values depending on the values in the PromQL query itself.
 
 ## 5. Tips and Tricks
@@ -147,7 +138,7 @@ After some time already working with Unit Tests in Prometheus Alerts, I’ve dec
 
 ### 1. Samples can be empty ( `_` or `stale`)
 
-Sometimes in the tests we are tempted to set `0` when a metric is not being reported, and this is wrong. A metric that is not reported should be represented as `_` which is not the same as `0` (`0` is a valud value for a metric). Be mind with that and always take into account this kind of situation when coding a test.
+Sometimes in the tests we are tempted to set `0` when a metric is not being reported, and this is wrong. A metric that is not reported should be represented as `_` which is not the same as `0` (`0` is a valid value for a metric). Be mind with that and always take into account this kind of situation when coding a test.
 
 In the example we shown before we relied in the ability of `app` to report `0` when it’s down. But what it really happens is that if it is down it won’t report anything, so the sample should goes `_`. instead. Let's rewrite our test:
 
@@ -180,7 +171,7 @@ There’s another thing to be aware of, and is the “staleness” handling of P
 Then, taking into account those 5 minutes, the tests should looks like this:
 
 ```yaml
-    interval: 1m
+		interval: 1m
 
     input_series:
 
@@ -212,6 +203,8 @@ Then, taking into account those 5 minutes, the tests should looks like this:
         alertname: InstancesDownV2
 ```
 
+There’s another way of achievent this and is by using `absent()` function. It will return `1` value if the result of the scrapping is empty. So we could rephrase our expresion as `absent(up{job="app"})` , when the `up` query returns empty, `absent()` will return `1` and this will be evaluated as `true` , so the alert will fire, and the test will pass.
+
 ### 2. Usage of `for` in Rules
 
 There is a commonly used parameter in Alerting rules called `for` in Prometheus. This parameter determines how long Prometheus should check if an alert remains active during each evaluation period before actually firing the alert. During this time, elements that are considered "active" but not yet "firing" are in the "pending" state.
@@ -237,7 +230,7 @@ This single change can cause our unit test to fail, which is a common occurrence
 To address this issue, we need to modify our test by waiting for the alert to fire after an additional minute. The updated test code would look like this:
 
 ```yaml
-      - eval_time: 4m
+			- eval_time: 4m
         alertname: InstancesDownV3
  
       - eval_time: 11m # <-- Changed because of the "for" clause
@@ -269,6 +262,16 @@ TESTS := $(shell find ./etc/prometheus/rules -type f -regex '^.*_test\.yml$$' | 
 test:
 	@docker compose exec -w '/etc/prometheus/rules' prometheus promtool test rules $(TESTS)
 ```
+
+### 4. Prometheus scalability and Alerting
+
+Prometheus is meant to be easy to install and easy to use. Unlike other software platforms that make scalability a convoluted mess of clustering and sharding mechanisms, the Prometheus creators deliberately opted for a different path—it doesn't scale horizontally.
+
+That means that you can have multiple Prometheus instances but they do not talk to each other. They can scrape the same targets and store the metrics in their internal TSDB. If you have a Grafana instance to visualize the metrics, you'd have to configure multiple Data Sources that point to each different Prometheus instance (because, hey, there's no such thing as a "*connect to the cluster*" like you might find in RDS or Elasticsearch).
+
+The way of solving this problem is just to forward the metrics to an external storage platform that will allow horizontal scaling (like Cortex or Thanos). Therefore, all the Prometheus instances will send metrics to a centralized place that can be attached as a unique Data Source for Grafana.
+
+One important thing to take into account is that even if you enable such a mechanism to forward metrics to an external storage, Prometheus will still store the metrics in its internal TSDB (with a retention policy of 15 days or by surpassing a certain size on disk). And this is important because the alerting rules configured in Prometheus rely on data from its internal TSDB. That's precisely why alerting rules are crafted with short time windows like 5 minutes, 1 hour, or maybe 24 hours, but rarely beyond that.
 
 ## 6. Conclusions
 
